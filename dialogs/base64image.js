@@ -2,7 +2,7 @@
  * Created by ALL-INKL.COM - Neue Medien Muennich - 04. Feb 2014
  * Licensed under the terms of GPL, LGPL and MPL licenses.
  */
-CKEDITOR.dialog.add("base64imageDialog", function(editor){
+CKEDITOR.dialog.add("image64embedDialog", function(editor){
 	
 	var t = null,
 		selectedImg = null,
@@ -433,7 +433,7 @@ CKEDITOR.dialog.add("base64imageDialog", function(editor){
                     {
                         type: "text",
                         id: "alt",
-                        label: editor.lang.base64image.alt
+                        label: editor.lang.image64embed.alt
                     },
                     {
 						type: 'hbox',
@@ -454,7 +454,7 @@ CKEDITOR.dialog.add("base64imageDialog", function(editor){
 							{
 								type: "checkbox",
 								id: "lock",
-								label: editor.lang.base64image.lockRatio,
+								label: editor.lang.image64embed.lockRatio,
 								style: "margin-top:18px;"
 							}
 						]
@@ -480,19 +480,19 @@ CKEDITOR.dialog.add("base64imageDialog", function(editor){
 								type: "text",
 								width: "45px",
 								id: "vmargin",
-								label: editor.lang.base64image.vSpace
+								label: editor.lang.image64embed.vSpace
 							},
 							{
 								type: "text",
 								width: "45px",
 								id: "hmargin",
-								label: editor.lang.base64image.hSpace
+								label: editor.lang.image64embed.hSpace
 							},
 							{
 								type: "text",
 								width: "45px",
 								id: "border",
-								label: editor.lang.base64image.border
+								label: editor.lang.image64embed.border
 							}
 						]
 					}

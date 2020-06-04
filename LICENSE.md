@@ -1,11 +1,13 @@
 Software License Agreement
 ==========================
 
-Base64Image Plugin for CKEditor - Adds images from local client as base64
-string into the source without server side processing. You can also add
-external image urls into the source.
+Image64embed Plugin for CKEditor - Adds images from local client as base64
+string into the source without server side processing. You can also add images
+external image urls into the source. Or embed images from external sources into
+the source as base64.
 
-Created by ALL-INKL.COM - Neue Medien Münnich - 04. Feb 2014
+Create by Justin Ohms 2020-06-04
+based on base64image plugin by ALL-INKL.COM - Neue Medien Münnich - 04. Feb 2014
 
 Licensed under the terms of any of the following licenses at your
 choice:
