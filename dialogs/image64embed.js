@@ -63,8 +63,15 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 			try {
 				var p = imgPreview.getElement().$;
 				if(p) p.appendChild(this);
+
+				/* show embed button if loaded from a url*/
+				if(urlI) urlEmbed.getElement().$.style.visibility = 'visible'
+
 			} catch(e) {}
-			
+
+
+
+
 		};
 		
 		/* Error Function */
@@ -89,16 +96,16 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 			
 		} else if(src == "url") {
 			
-			/* Ensable Image URL Checkbox */
+			/* Enable Image URL Checkbox */
 			if(urlCB) urlCB.setValue(true, true);
 			if(fileCB) fileCB.setValue(false, true);
 			
 			/* Load preview image */
 			if(urlI) imagePreviewLoad(urlI.getValue());
-			
+
 		} else if(fsupport) {
 			
-			/* Ensable Image File Checkbox */
+			/* Enable Image File Checkbox */
 			if(urlCB) urlCB.setValue(false, true);
 			if(fileCB) fileCB.setValue(true, true);
 			
@@ -166,7 +173,41 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 		if(isNaN(v)) v = 0;
 		elem.setValue(v+u);
 	}
-	
+
+
+	async function getBase64ImageFromUrl(imageUrl) {
+		var res = await fetch(imageUrl);
+		var blob = await res.blob();
+
+		return new Promise((resolve, reject) => {
+			var reader  = new FileReader();
+			reader.addEventListener("load", function () {
+				resolve(reader.result);
+			}, false);
+
+
+			reader.onerror = () => {
+				return reject(this);
+			};
+			reader.readAsDataURL(blob);
+		})
+	}
+
+	function embedFromUrl(imgurl){
+		var preview = CKEDITOR.document.getById(editor.id+"previewimage").$;
+		getBase64ImageFromUrl(imgurl)
+			.then(result => {
+				urlI.setValue("");
+				preview.src = result;
+				alert("Embedded");
+			})
+			.catch(err => console.error(err))
+
+		/* hide embed button */
+		urlEmbed.getElement().$.style.visibility = 'hidden'
+	}
+
+
 	if(fsupport) {
 		
 		/* Dialog with file and url image source */
@@ -188,10 +229,10 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 						onChange: function(){ imagePreview("url"); }
 					},
 					{
-						type: "checkbox",
+						type: "button",
 						id: "urlembed",
-						style: "margin-top:5px",
-						label: "Embed"
+						label: "Embed",
+						enable: false
 					}
 				]
 			},
@@ -231,9 +272,8 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 				onChange: function(){ imagePreview("url"); }
 			},
 			{
-				type: "checkbox",
+				type: "button",
 				id: "urlembed",
-				style: "margin-top:5px",
 				label: "Embed"
 			}
 			,
@@ -271,6 +311,11 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 			/* Get url embed input element */
 			urlEmbed = this.getContentElement("tab-source", "urlembed");
 
+			urlEmbed.getInputElement().on( "click", function (){ embedFromUrl( urlI.getValue() ) } )
+
+			/* hide embed button */
+			urlEmbed.getElement().$.style.visibility = 'hidden'
+
 			/* Get image preview element */
 			imgPreview = this.getContentElement("tab-source", "preview");
 			
@@ -286,7 +331,9 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 			this.getContentElement("tab-properties", "vmargin").getInputElement().on("keyup", function(){ integerValue(this); }, this.getContentElement("tab-properties", "vmargin"));
 			this.getContentElement("tab-properties", "hmargin").getInputElement().on("keyup", function(){ integerValue(this); }, this.getContentElement("tab-properties", "hmargin"));
 			this.getContentElement("tab-properties", "border").getInputElement().on("keyup", function(){ integerValue(this); }, this.getContentElement("tab-properties", "border"));
-			
+
+
+
 		},
 		onShow: function(){
 			
@@ -294,7 +341,10 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 			imgPreview.getElement().setHtml("");
 			
 			t = this, orgWidth = null, orgHeight = null, imgScal = 1, lock = true;
-			
+
+			/* hide embed button */
+			urlEmbed.getElement().$.style.visibility = 'hidden'
+
 			/* selected image or null */
 			selectedImg = editor.getSelection();
 			if(selectedImg) selectedImg = selectedImg.getSelectedElement();
@@ -358,6 +408,8 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 				}
 				t.selectPage("tab-properties");
 			}
+
+
 			
 		},
 		onOk : function(){
