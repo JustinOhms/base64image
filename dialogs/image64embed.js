@@ -7,7 +7,7 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 	var t = null,
 		selectedImg = null,
 		orgWidth = null, orgHeight = null,
-		imgPreview = null, urlCB = null, urlI = null, fileCB = null, imgScal = 1, lock = true;
+		imgPreview = null, urlCB = null, urlI = null, urlEmbed = null, fileCB = null, imgScal = 1, lock = true;
 	
 	/* Check File Reader Support */
 	function fileSupport() {
@@ -186,6 +186,12 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 						id: "url",
 						label: "",
 						onChange: function(){ imagePreview("url"); }
+					},
+					{
+						type: "checkbox",
+						id: "urlembed",
+						style: "margin-top:5px",
+						label: "Embed"
 					}
 				]
 			},
@@ -225,6 +231,13 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 				onChange: function(){ imagePreview("url"); }
 			},
 			{
+				type: "checkbox",
+				id: "urlembed",
+				style: "margin-top:5px",
+				label: "Embed"
+			}
+			,
+			{
 				type: "html",
 				id: "preview",
 				html: new CKEDITOR.template("<div style=\"text-align:center;\"></div>").output()
@@ -250,10 +263,14 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 				fileCB.getInputElement().on("click", function(){ imagePreview("file"); });
 				
 			}
-			
+
+
 			/* Get url input element */
 			urlI = this.getContentElement("tab-source", "url");
-			
+
+			/* Get url embed input element */
+			urlEmbed = this.getContentElement("tab-source", "urlembed");
+
 			/* Get image preview element */
 			imgPreview = this.getContentElement("tab-source", "preview");
 			
