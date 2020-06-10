@@ -3,7 +3,9 @@
  * Licensed under the terms of GPL, LGPL and MPL licenses.
  */
 CKEDITOR.dialog.add("image64embedDialog", function(editor){
-	
+
+	var fileProxy = editor.config.fileProxy;
+
 	var t = null,
 		selectedImg = null,
 		orgWidth = null, orgHeight = null,
@@ -195,7 +197,10 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
 
 	function embedFromUrl(imgurl){
 		var preview = CKEDITOR.document.getById(editor.id+"previewimage").$;
-		getBase64ImageFromUrl(imgurl)
+
+		var proxyUrl = fileProxy + encodeURIComponent(imgurl)
+
+		getBase64ImageFromUrl(proxyUrl)
 			.then(result => {
 				urlI.setValue("");
 				preview.src = result;
@@ -291,7 +296,7 @@ CKEDITOR.dialog.add("image64embedDialog", function(editor){
         minWidth: 450,
         minHeight: 180,
 		onLoad: function(){
-			
+
 			if(fsupport) {
 				
 				/* Get checkboxes */

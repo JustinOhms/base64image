@@ -10,6 +10,8 @@ CKEDITOR.plugins.add("image64embed", {
 	hidpi	:	true,
     init	: 	function(editor){
 					var pluginName = 'image64embedDialog';
+
+
 					
 					editor.ui.addButton("image64embed", {
 						label: editor.lang.common.image,
@@ -55,3 +57,17 @@ CKEDITOR.plugins.add("image64embed", {
 					}
 				}
 });
+
+/**
+ * The relative path on the server to be used for the fileProxy
+ *
+ *		config.file_proxy = '/fileproxy/';
+ *
+ * @cfg {String} [file_proxy='']
+ * @member CKEDITOR.config
+ */
+
+/**
+* @cfg {String} [fileProxy='pf']
+* @member CKEDITOR.config
+*/
